@@ -1,21 +1,28 @@
 {
   "name": "Calculator",
   "description": "Calculator",
-  "version": "1.5",
+  "version": "1.0",
   "type": "web",
   "launch_path": "/Calculator.html",
   "developer": {
     "name": "Varun Malhotra",
-    "url": "https://github.com/softvar"
+    "url": "https://github.com/softvar/firefoxOs-Calculator"
   },
+  "icons": {
+    "128": "/style/icons/128.png",
+    "60": "/style/icons/60.png"
+  },
+  "orientation": "portrait-primary",
+  
+  "csp" : "default-src *; script-src 'self' 'unsafe-eval'; object-src 'none'; style-src 'self' 'unsafe-inline'",
   "locales": {
     "ar": {
       "name": "الحاسبة",
       "description": "الحاسبة"
     },
     "en": {
-      "name": "Scientific Calculator",
-      "description": "Scientific Calculator"
+      "name": "Calculator",
+      "description": "Calculator"
     },
     "fr": {
       "name": "Calculatrice",
@@ -46,8 +53,8 @@
       "description": "Kalkulačka"
     },
     "de": {
-      "name": "Taschenrechner",
-      "description": "Taschenrechner"
+      "name": "Rechner",
+      "description": "Rechner"
     },
     "hu": {
       "name": "Számológép",
@@ -58,10 +65,6 @@
       "description": "Calculator"
     }
   },
-  "default_locale": "en-US",
-  "icons": {
-    "128": "/style/icons/128.png",
-    "60": "/style/icons/60.png"
-  },
-  "orientation": "portrait-primary"
+  "default_locale": "en-US"
+  
 }

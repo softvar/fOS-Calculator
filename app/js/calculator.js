@@ -1,112 +1,149 @@
-(function () {
+'use strict';
 
-  var len, scaleFactor, Scale, last_displayKey, ch;
-})();
-
-function changeColor(element,colour) {
+var Calculator = {
+  disp : document.getElementById("display"),
+  target: '',
   
-  elmnt.style.color=colour;
-
-}
-
-function displayKey(input, inputKey) {
+  displayKey: function displayKey(inputKey) {
   
-  if(checkOperatorDuplicacy(input, inputKey)) {
+  if (inputKey=='×') inputKey='*';
+  if (inputKey=='÷') inputKey='/';
 
-  len = input.value.length;
+  if (this.target.dataset.type == 'operator')
+   this.checkOperatorDuplicacy(inputKey) ;
+  
+  var len = this.disp.value.length;
+  
+ 
   if (len>40 ){
     alert("Limit exceeds");
     return false;
   }
 	
-  if(input.value == null || input.value == "0")
-    input.value = inputKey;
-  else if(inputKey == "-1") {
-    if (validateExpr(input.value)) { 
-      if (checkOperatorDuplicacy(input,inputKey))
-        input.value = (-1)*compute(input); 
-      }
-  }
-  else
-    input.value += inputKey;
-
-  len = input.value.length;
-  this.update(input,len);
-  }
+  if(this.disp.value == null || this.disp.value == "0")
+    {if (this.target.dataset.type=='operator') return;
+	else this.disp.value = inputKey;
+    }
+  else 
+    this.disp.value += inputKey;
+	
+  
+  len = this.disp.value.length;
+  this.update(len);
        
-}
+},
 
-function checkOperatorDuplicacy(input,inputKey) {
-  last_displayKey = input.value.substring(input.value.length - 1,input.length);
-        
-  if ( last_displayKey == '+' ) {
-    if ( inputKey == '+' || inputKey == '*' || inputKey == '/' || inputKey == '-' || inputKey == '='  || inputKey == '-1' )  
-      return false;
-    }
-  if ( last_displayKey == '*' ) {
-    if ( inputKey == '+' || inputKey == '*' || inputKey == '/' || inputKey == '-' || inputKey == '='  || inputKey == '-1' )  
-      return false;
-    }
-  if ( last_displayKey == '/' ) {
-    if ( inputKey == '+' || inputKey == '*' || inputKey == '/' || inputKey == '-' || inputKey == '='  || inputKey == '-1' )  
-      return false;
-    }
-  if ( last_displayKey == '-' ) {
-    if ( inputKey == '+' || inputKey == '*' || inputKey == '/' || inputKey == '-' || inputKey == '='  || inputKey == '-1' )  
-      return false;
-    }  
+  checkOperatorDuplicacy: function checkOperatorDuplicacy(inputKey) {
+  var last_displayKey = this.disp.value.substring(this.disp.value.length - 1,this.disp.value.length);
+ 
+  if ( last_displayKey == '+' || last_displayKey == '-' || last_displayKey == '/' || last_displayKey == '*' || last_displayKey == '%')  { 
+    if ( inputKey == '+' || inputKey == '*' || inputKey == '/' || inputKey == '-' || inputKey == '%')  
+      
+	  this.disp.value = this.disp.value.substring(0,this.disp.value.length - 1); return true;
+    }	
+	else if ( inputKey == '=' )
+	  return false;
+	else
+	  return true;
   
-  return true;
-}
+},
 
-function compute(input) {
-  
-  input.value = eval(input.value);
-  update(input,input.value.length);
-  
-  return input.value;
-}
+  update: function update(displayKeyLength) {
 
-function update(input,displayKeyLength) {
-
-  scaleFactor = document.getElementById("display").offsetWidth/18;
-  Scale = scaleFactor*displayKeyLength;
+  var scaleFactor = document.getElementById("display").offsetWidth/18;
+  var Scale = scaleFactor*displayKeyLength;
 
   if(Scale > 280)
     document.getElementById("display").style.fontSize  = "3.38em";
   else
     document.getElementById("display").style.fontSize  = "5.7em";
 
-}
+},
+  
+  compute: function compute() {
+  
+  var sign = 1;
+  if (this.disp.value[0] == '-') sign = -1;
+  this.disp.value = this.calculate(this.disp.value,sign);
+  this.update(this.disp.value.length);
+  return this.disp.value;
+  },
+
+  calculate: function calculate(input,sign){
+
+   var opr_list = { add : '+'
+           , sub : '-' 
+           , div : '/'
+           , mlt : '*'
+           , mod : '%'
+           , exp : '^' };
+    
+   opr_list.opr = [[ [opr_list.mlt] , [opr_list.div] , [opr_list.mod]],
+            [ [opr_list.add] , [opr_list.sub] ]];
+
+   input = input.replace(/[^0-9%^*\/()\-+.]/g,'');      
+   
+   var output,n;
+   for(var i=0, n=opr_list.opr.length; i<n; i++ ){
+
+      var re = new RegExp('(\\d+\\.?\\d*)([\\'+opr_list.opr[i].join('\\')+'])(\\d+\\.?\\d*)');
+      re.lastIndex = 0;                                     
+            while( re.test(input) ){
+         
+		 output = this.compute_result(opr_list,sign*RegExp.$1,RegExp.$2,RegExp.$3);
+		
+         if (isNaN(output) || !isFinite(output)) return output; 
+         input  = input.replace(re,output);
+      }
+   }
+
+   return output;
+},
+
+   compute_result: function compute_result(opr_list,a,op,b){
+      a=a*1; b=b*1;
+      switch(op){
+         case opr_list.add: return a+b; break;
+         case opr_list.sub: return a-b; break;
+         case opr_list.div: return a/b; break;
+         case opr_list.mlt: return a*b; break;
+         case opr_list.mod: return a%b; break;
+         default: null;
+      }
+   },
 
 
-function clearall(input) {
+  
+  clearall: function clearall() {
   
   document.getElementById("display").style.fontSize = "5.7em";
-  input.value = 0;
+  this.disp.value = 0;
 
-}
+  },
+  
+  deleteKey: function deleteKey() {
 
-function deleteKey(input) {
+  this.disp.value = this.disp.value.substring(0, this.disp.value.length - 1);
+  if (this.disp.value== '') 
+    this.disp.value = 0;
+  },
 
-  input.value = input.value.substring(0, input.value.length - 1);
-}
+  checkSyntax: function checkSyntax(inputKey) {
 
-function checkSyntax(input, inputKey) {
-
-  if (validateExpr(input.value)) { 
-    if (checkOperatorDuplicacy(input,inputKey))
-      compute(input);
+  if (this.validateExpr(this.disp.value)) { 
+    if (!this.checkOperatorDuplicacy(inputKey))
+      this.compute();
   }
-}
+  },
 
-function validateExpr(displayExpr) {
+  validateExpr: function validateExpr(displayExpr) {
 
+  if (displayExpr.length == 0) return false;
   for (var i = 0; i < displayExpr.length; i++) {
-      ch = displayExpr.substring(i, i+1);
+      var ch = displayExpr.substring(i, i+1);
       if (ch < "0" || ch > "9") {
 
-	 if (ch != "/" && ch != "*" && ch != "+" && ch != "-" && ch != "." && ch != "(" && ch!= ")") {
+	 if (ch != "/" && ch != "*" && ch != "+" && ch != "-" && ch != "." && ch != "%" ) {
 	   alert("Syntax Error!!");
 	   return false;
 
@@ -114,8 +151,43 @@ function validateExpr(displayExpr) {
       }
   }
   return true;
-}
+  },
+  
+init: function init() {
+    //var len, scaleFactor, Scale, last_displayKey, ch;
+    document.addEventListener('mousedown', this);
+    
+  },
+  
+handleEvent: function handleEvent(evt) {
+    this.target = evt.target;
+    var value = this.target.value;
+	
+    switch (this.target.dataset.type) {
+      case 'key-value':
+	  case 'operator':
+        this.displayKey(value);
+		break;
+	  case 'clear':
+	    this.clearall();
+		break;
+	  case 'delete':
+	    this.deleteKey();
+		break;
+	  case 'compute':
+	    this.checkSyntax(value);
+		break;
+	}
+	
+  },
+  
+};
 
+
+window.addEventListener('load', function load(evt) {
+  window.removeEventListener('load', load);
+  Calculator.init();
+});
 
 
 

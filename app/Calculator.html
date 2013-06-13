@@ -4,7 +4,7 @@
     <meta charset="utf-8" />  
     <title>Calculator</title>
     <link rel="stylesheet" href="style/calculator.css">
-    <script type="text/javascript" src="js/calculator.js" ></script> 
+    
   </head>
   <body>
    
@@ -15,41 +15,41 @@
     <textarea NAME="display" rows="3" id="display" ></textarea>
 
     <div class="keypad-row">
-      <input type="button" id="clear"    value="C"   ONCLICK="clearall(this.form.display)" />
-      <input type="button" id="button-key"  value="×"   ONCLICK="displayKey(this.form.display, '*')" />
-      <input type="button" id="button-key"  value="÷"   ONCLICK="displayKey(this.form.display, '/')"  />
-      <input type="button" id="delete"      value="Del" ONCLICK="deleteKey(this.form.display)" />
+      <input type="button" id="clear"       value="C"   data-type="clear"  /> 
+      <input type="button" id="button-key"  value="×"   data-type="operator"   />
+      <input type="button" id="button-key"  value="÷"   data-type="operator"   />
+      <input type="button" id="delete"      value="Del" data-type="delete" />
     </div>
 
     <div class="keypad-row">
-      <input type="button" id="button-key" value="7" ONCLICK="displayKey(this.form.display, '7')" />
-      <input type="button" id="button-key" value="8" ONCLICK="displayKey(this.form.display, '8')" />
-      <input type="button" id="button-key" value="9" ONCLICK="displayKey(this.form.display, '9')" />
-      <input type="button" id="button-key" value="-" ONCLICK="displayKey(this.form.display, '-')" />
+      <input type="button" id="button-key" value="7"  data-type="key-value"/>
+      <input type="button" id="button-key" value="8"  data-type="key-value"/>
+      <input type="button" id="button-key" value="9"  data-type="key-value"/>
+      <input type="button" id="button-key" value="-"  data-type="operator" />
     </div>
 
     <div class="keypad-row">
-      <input type="button" id="button-key" value="4" ONCLICK="displayKey(this.form.display, '4')"  disabled="true"/>
-      <input type="button" id="button-key" value="5" ONCLICK="displayKey(this.form.display, '5')"  />
-      <input type="button" id="button-key" value="6" ONCLICK="displayKey(this.form.display, '6')"  />
-      <input type="button" id="button-key" value="+" ONCLICK="displayKey(this.form.display, '+')" />
+      <input type="button" id="button-key" value="4" data-type="key-value"/>
+      <input type="button" id="button-key" value="5" data-type="key-value" />
+      <input type="button" id="button-key" value="6" data-type="key-value" />
+      <input type="button" id="button-key" value="+" data-type="operator"/>
     </div>
 
     <div class="keypad-row">
-      <input type="button" id="button-key" value="1" ONCLICK="displayKey(this.form.display, '1')" />
-      <input type="button" id="button-key" value="2" ONCLICK="displayKey(this.form.display, '2')" />
-      <input type="button" id="button-key" value="3" ONCLICK="displayKey(this.form.display, '3')" />
+      <input type="button" id="button-key" value="1" data-type="key-value"/>
+      <input type="button" id="button-key" value="2" data-type="key-value"/>
+      <input type="button" id="button-key" value="3" data-type="key-value" />
       
     </div>
 
     <div class="keypad-row">
-      <input type="button" id="button-key" value="."  ONCLICK="displayKey(this.form.display, '.')"/>
-      <input type="button" id="button-key" value="0"  ONCLICK="displayKey(this.form.display, '0')"/>
-      <input type="button" id="button-key" value="+/-"ONCLICK="displayKey(this.form.display, '-1')"/>
+      <input type="button" id="button-key" value="." data-type="key-value"/>
+      <input type="button" id="button-key" value="0" data-type="key-value"/>
+      <input type="button" id="button-key" value="%" data-type="operator"/>
     </div>
 
-      <input type="button" id="equal" value="=" ONCLICK="checkSyntax(this.form.display,'=')" />
+      <input type="button" id="equal" value="=" data-type="compute" />
     </FORM>
-      
+    <script type="text/javascript" src="js/calculator.js" ></script> 
   </body>
 </html>
