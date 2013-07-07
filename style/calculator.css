@@ -93,13 +93,7 @@ input#button-key:hover,input#equal:hover,input#clear:hover {
 input#button-key:active,input#equal:active,input#clear:active {
   background: #1E7ED8;
 }
-input#equal {
-  height: 11rem;
-  display: inline;
-  margin-top: -110px;
-  margin-left: 237px; 
-  position:absolute;
-}
+
 
 input#delete:hover {
   background: #1B8FFC;

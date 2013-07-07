@@ -1,3 +1,11 @@
+/*
+
+Description: Simple Calculator with Copy-&-Paste functionality
+Developed by: Varun Malhotra
+Source Code: https://github.com/softvar/firefoxos-calculator
+
+*/
+
 'use strict';
 
 var Calculator = {
@@ -19,14 +27,14 @@ var Calculator = {
     alert("Limit exceeds");
     return false;
   }
-	
+  
   if(this.disp.value == null || this.disp.value == "0")
     {if (this.target.dataset.type=='operator') return;
-	else this.disp.value = inputKey;
+  else this.disp.value = inputKey;
     }
   else 
     this.disp.value += inputKey;
-	
+  
   
   len = this.disp.value.length;
   this.update(len);
@@ -36,15 +44,15 @@ var Calculator = {
   checkOperatorDuplicacy: function checkOperatorDuplicacy(inputKey) {
   var last_displayKey = this.disp.value.substring(this.disp.value.length - 1,this.disp.value.length);
  
-  if ( last_displayKey == '+' || last_displayKey == '-' || last_displayKey == '/' || last_displayKey == '*' || last_displayKey == '%')  { 
-    if ( inputKey == '+' || inputKey == '*' || inputKey == '/' || inputKey == '-' || inputKey == '%')  
+  if ( last_displayKey == '+' || last_displayKey == '-' || last_displayKey == '/' || last_displayKey == '*' || last_displayKey == '%' || last_displayKey == '^')  { 
+    if ( inputKey == '+' || inputKey == '*' || inputKey == '/' || inputKey == '-' || inputKey == '%' || inputKey == '^')  
       
-	  this.disp.value = this.disp.value.substring(0,this.disp.value.length - 1); return true;
-    }	
-	else if ( inputKey == '=' )
-	  return false;
-	else
-	  return true;
+    this.disp.value = this.disp.value.substring(0,this.disp.value.length - 1); return true;
+    } 
+  else if ( inputKey == '=' )
+    return false;
+  else
+    return true;
   
 },
 
@@ -76,10 +84,10 @@ var Calculator = {
            , div : '/'
            , mlt : '*'
            , mod : '%'
-           , exp : '^' };
+           , pow : '^' };
     
    opr_list.opr = [[ [opr_list.mlt] , [opr_list.div] , [opr_list.mod]],
-            [ [opr_list.add] , [opr_list.sub] ]];
+            [ [opr_list.add] , [opr_list.sub] , [opr_list.pow] ]];
 
    input = input.replace(/[^0-9%^*\/()\-+.]/g,'');      
    
@@ -90,8 +98,8 @@ var Calculator = {
       re.lastIndex = 0;                                     
             while( re.test(input) ){
          
-		 output = this.compute_result(opr_list,sign*RegExp.$1,RegExp.$2,RegExp.$3);
-		
+     output = this.compute_result(opr_list,sign*RegExp.$1,RegExp.$2,RegExp.$3);
+    
          if (isNaN(output) || !isFinite(output)) return output; 
          input  = input.replace(re,output);
       }
@@ -108,6 +116,7 @@ var Calculator = {
          case opr_list.div: return a/b; break;
          case opr_list.mlt: return a*b; break;
          case opr_list.mod: return a%b; break;
+         case opr_list.pow: return Math.pow(a,b); break;
          default: null;
       }
    },
@@ -129,7 +138,7 @@ var Calculator = {
   },
 
   checkSyntax: function checkSyntax(inputKey) {
-
+  
   if (this.validateExpr(this.disp.value)) { 
     if (!this.checkOperatorDuplicacy(inputKey))
       this.compute();
@@ -143,9 +152,9 @@ var Calculator = {
       var ch = displayExpr.substring(i, i+1);
       if (ch < "0" || ch > "9") {
 
-	 if (ch != "/" && ch != "*" && ch != "+" && ch != "-" && ch != "." && ch != "%" ) {
-	   alert("Syntax Error!!");
-	   return false;
+   if (ch != "/" && ch != "*" && ch != "+" && ch != "-" && ch != "." && ch != "%" && ch != "^" ) {
+     this.disp.value = 0;
+     return false;
 
          }
       }
@@ -162,23 +171,23 @@ init: function init() {
 handleEvent: function handleEvent(evt) {
     this.target = evt.target;
     var value = this.target.value;
-	
+  
     switch (this.target.dataset.type) {
       case 'key-value':
-	  case 'operator':
+    case 'operator':
         this.displayKey(value);
-		break;
-	  case 'clear':
-	    this.clearall();
-		break;
-	  case 'delete':
-	    this.deleteKey();
-		break;
-	  case 'compute':
-	    this.checkSyntax(value);
-		break;
-	}
-	
+    break;
+    case 'clear':
+      this.clearall();
+    break;
+    case 'delete':
+      this.deleteKey();
+    break;
+    case 'compute':
+      this.checkSyntax(value);
+    break;
+  }
+  
   },
   
 };
