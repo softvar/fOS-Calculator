@@ -25,17 +25,15 @@ body {
 }
 
 .app-name {
-  
-  width: 98%;
+
   font-size: 13px;
-  height:30px;
-  padding: 0px;
+  height: 30px;
+  padding-top: 3px;
   color: #ffffff;
-  background: #298ED2;
-  margin: 0px 3px -2px ;
+  background: #257EBB;
+  margin: 0px 3px -2px;
   text-align: center;
-  font-family: MozTT, sans-serif; 
-  font-weight: 600;
+  font-family: MozTT, sans-serif;
   font-size: 2rem;
 }
 
@@ -100,19 +98,18 @@ input#delete:hover {
   color: #ff0000;;
 }
 input.disp {
-width: 97%;
 }
 
 #display {
-
-  color: #111111;
-  margin: 3px;
+  color: #111;
   height: 140px;
-  width: 97%;
   font-family: MozTT, sans-serif;
-  background-color: #4E99DC;
+  background-color: #5A8EBB;
   font-size: 5.7rem;
   resize: none;
+  width: 97%;
+  margin: 0px 3px -2px;
+  border: 1px solid #222;
 }
 
 
